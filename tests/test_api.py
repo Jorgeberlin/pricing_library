@@ -8,14 +8,6 @@ import pytest
 
 import hesperides.api as hapi
 
-
-def test_health_check():
-
-    result = hapi.health_check()
-
-    assert result == "ok"
-
-
 @pytest.mark.regression
 def test_european_put_exercise_3_already_submitted():
     """

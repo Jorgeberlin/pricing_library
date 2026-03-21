@@ -5,9 +5,6 @@ from hesperides.pricers.binomial_pricer import BinomialPricer
 """
 Public API for the pricing library.
 """
-# Este lo dejo aquí para tener como base (por si necesito pasar 1 dummy test al menos)
-def health_check() -> str:
-    return "ok"
 
 #Este es el test de Romaniega, está en el github de la entrega
 def get_price_binomial_european(
