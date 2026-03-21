@@ -1,0 +1,5 @@
+numpy>=2.0.0
+
+[dev]
+pytest>=8.2
+build>=1.2

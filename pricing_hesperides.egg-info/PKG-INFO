@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: pricing_hesperides
+Version: 0.1.0
+Summary: Library for asset pricing
+Requires-Python: ==3.13.*
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=2.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2; extra == "dev"
+Requires-Dist: build>=1.2; extra == "dev"
