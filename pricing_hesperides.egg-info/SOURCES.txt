@@ -2,10 +2,15 @@ pyproject.toml
 hesperides/__init__.py
 hesperides/api.py
 hesperides/contracts/__init__.py
+hesperides/contracts/european_option.py
 hesperides/engines/__init__.py
+hesperides/engines/binomial_engine.py
 hesperides/market/__init__.py
+hesperides/market/curves.py
 hesperides/models/__init__.py
+hesperides/models/binomial_model.py
 hesperides/pricers/__init__.py
+hesperides/pricers/binomial_pricer.py
 pricing_hesperides.egg-info/PKG-INFO
 pricing_hesperides.egg-info/SOURCES.txt
 pricing_hesperides.egg-info/dependency_links.txt
