@@ -20,9 +20,9 @@ class BinomialEngine:
 
         dt = 1.0
 
-        discount = curve.get_discount_factor(dt)
+        discount = curve.get_simple_discount_factor(dt)
 
-        prob_risk_neutral= (np.exp(rate * dt) - down) / (up - down)
+        prob_risk_neutral= (1.0 + rate - down) / (up - down)
 
         t = np.arange(maturity + 1)
 
