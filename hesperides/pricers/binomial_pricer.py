@@ -21,3 +21,6 @@ class BinomialPricer:
             down=model.down
 
         )
+
+
+
