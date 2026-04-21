@@ -16,4 +16,5 @@ pricing_hesperides.egg-info/SOURCES.txt
 pricing_hesperides.egg-info/dependency_links.txt
 pricing_hesperides.egg-info/requires.txt
 pricing_hesperides.egg-info/top_level.txt
-tests/test_api.py
+tests/test_pricing.py
+tests/test_static_arbitrage.py
