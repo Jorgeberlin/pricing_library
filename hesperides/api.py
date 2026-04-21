@@ -6,7 +6,7 @@ from hesperides.pricers.binomial_pricer import BinomialPricer
 Public API for the pricing library.
 """
 
-#Este es el test de Romaniega, está en el github de la entrega
+# BINOMIAL FACHADA DE API
 def get_price_binomial_european(
     St: float,
     K: float,
