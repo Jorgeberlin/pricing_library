@@ -1,6 +1,5 @@
 # Módulos necesarios para el cálculo de cantidades de arbitraje estático
 from __future__ import annotations
-import numpy as np
 
 # Módulos necesarios para el pricing
 from hesperides.contracts.european_option import EuropeanOption
