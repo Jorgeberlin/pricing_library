@@ -17,9 +17,7 @@ class BinomialEngine:
     ) -> float:
 
         curve = FlatDiscountCurve(rate)
-
         dt = 1.0
-
         discount = curve.get_simple_discount_factor(dt)
 
         prob_risk_neutral= (1.0 + rate - down) / (up - down)

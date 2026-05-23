@@ -7,6 +7,7 @@ hesperides/engines/__init__.py
 hesperides/engines/binomial_engine.py
 hesperides/market/__init__.py
 hesperides/market/curves.py
+hesperides/market/static_arbitrage.py
 hesperides/models/__init__.py
 hesperides/models/binomial_model.py
 hesperides/pricers/__init__.py
