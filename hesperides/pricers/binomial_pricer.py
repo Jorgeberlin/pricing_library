@@ -22,5 +22,5 @@ class BinomialPricer:
 
         )
 
-
-
+class BlackScholesPricer:
+    pass
