@@ -5,6 +5,7 @@ Summary: Library for asset pricing
 Requires-Python: ==3.13.*
 Description-Content-Type: text/markdown
 Requires-Dist: numpy>=2.0.0
+Requires-Dist: scipy>=1.14.0
 Provides-Extra: dev
 Requires-Dist: pytest>=8.2; extra == "dev"
 Requires-Dist: build>=1.2; extra == "dev"

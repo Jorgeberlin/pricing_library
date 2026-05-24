@@ -1,17 +1,10 @@
 import numpy as np
-
 from scipy.stats import norm
 
 from hesperides.contracts.european_option import EuropeanOption
 from hesperides.contracts.asian_option import AsianOption
 from hesperides.market.curves import FlatDiscountCurve
 
-import numpy as np
-
-from scipy.stats import norm
-
-from hesperides.contracts.european_option import EuropeanOption
-from hesperides.contracts.asian_option import AsianOption
 
 
 class AnalyticalEngine:
