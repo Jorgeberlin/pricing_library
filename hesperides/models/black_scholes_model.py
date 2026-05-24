@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 
-@dataclass (slots=True)
+from hesperides.market.curves import FlatDiscountCurve
+
+
+@dataclass(slots=True)
 class BlackScholesModel:
+
     spot: float
-    rate: float
     volatility: float
+    risk_free_curve: FlatDiscountCurve

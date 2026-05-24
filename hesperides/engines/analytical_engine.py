@@ -3,7 +3,7 @@ import numpy as np
 from scipy.stats import norm
 
 from hesperides.contracts.european_option import EuropeanOption
-
+from hesperides.market.curves import FlatDiscountCurve
 
 class AnalyticalEngine:
 

@@ -10,3 +10,7 @@ class FlatDiscountCurve:
     def get_simple_discount_factor(self, t: float) -> float:
 
         return 1.0 / (1.0 + self.rate) ** t
+    
+    def df(self, t: float) -> float:
+
+        return np.exp(-self.rate * t)

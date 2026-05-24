@@ -117,17 +117,12 @@ def get_price_bs_european(
     float
         Option price at valuation date.
     """
+
     curve = FlatDiscountCurve(r)
 
-    model = BlackScholesModel(
-    spot=St,
-    volatility=sigma,
-    risk_free_curve=curve)
+    model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve)
 
-    contract = EuropeanOption(
-    maturity=T,
-    strike=K,
-    is_call=call)
+    contract = EuropeanOption(maturity=T, strike=K, is_call=call)
 
     pricing_engine = AnalyticalEngine()
 
