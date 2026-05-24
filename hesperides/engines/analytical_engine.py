@@ -3,6 +3,7 @@ import numpy as np
 from scipy.stats import norm
 
 from hesperides.contracts.european_option import EuropeanOption
+from hesperides.contracts.asian_option import AsianOption
 from hesperides.market.curves import FlatDiscountCurve
 
 class AnalyticalEngine:
@@ -27,5 +28,7 @@ class AnalyticalEngine:
                 return (S * norm.cdf(d1)- K * df * norm.cdf(d2))
 
             return (K * df * norm.cdf(-d2)- S * norm.cdf(-d1))
-
+        
+        if isinstance(contract, AsianOption):
+            pass
         raise TypeError("Unsupported contract type")                 # Meter aquí los siguientes tipos de contrato y modelos, o meterlo en un switch-case o algo así.
