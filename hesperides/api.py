@@ -155,6 +155,14 @@ def get_price_bs_geometric_asian(
     curve = FlatDiscountCurve(r)
     model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve)
     contract = AsianOption(maturity=T, strike=K, is_call=call, is_geom=True)
-    pricing_engine = AnalyticalEngine()
+    if engine == "analytical":
+        pricing_engine = AnalyticalEngine()
+        return pricing_engine.price(contract, model)
 
-    return pricing_engine.price(contract, model)
+    elif engine == "mc":
+        if n_paths is None:
+            raise ValueError("n_paths is required for Monte Carlo")
+        if n_steps is None:
+            raise ValueError("n_steps is required for Monte Carlo Asian")
+        pricing_engine = MonteCarloEngine()
+        return pricing_engine.price(contract, model, n_paths=n_paths, n_steps=n_steps, seed=seed)

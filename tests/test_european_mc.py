@@ -3,7 +3,7 @@ import pytest
 import hesperides.api as hapi
 
 
-def test_bs_european_call():
+def test_mc_european_call():
 
     price = hapi.get_price_bs_european(
         St=100,
@@ -19,7 +19,7 @@ def test_bs_european_call():
 
     assert price == pytest.approx(10.4506, rel= 0.01)
 
-def test_bs_european_put():
+def test_mc_european_put():
 
     price = hapi.get_price_bs_european(
         St=100,
