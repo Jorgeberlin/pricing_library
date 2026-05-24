@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 # Módulos necesarios para el pricing
+from hesperides.contracts.asian_option import AsianOption
 from hesperides.contracts.european_option import EuropeanOption
+from hesperides.engines.monte_carlo_engine import MonteCarloEngine
 from hesperides.models.binomial_model import BinomialModel
 from hesperides.models.black_scholes_model import BlackScholesModel
 from hesperides.pricers.binomial_pricer import BinomialPricer
@@ -119,11 +121,40 @@ def get_price_bs_european(
     """
 
     curve = FlatDiscountCurve(r)
-
     model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve)
-
     contract = EuropeanOption(maturity=T, strike=K, is_call=call)
 
+    if engine == "analytical":
+        pricing_engine = AnalyticalEngine()
+        return pricing_engine.price(contract, model)
+    
+    elif engine == "mc":
+        if n_paths is None:
+            raise ValueError("n_paths is required for Monte Carlo")
+        pricing_engine = MonteCarloEngine()
+        return pricing_engine.price(contract, model, n_paths = n_paths, seed=seed)
+    
+    else:
+        raise ValueError("Invalid engine")
+
+
+#Fachada para la asiática geométrica:
+
+def get_price_bs_geometric_asian(
+    St: float,
+    K: float,
+    T: float,
+    r: float,
+    sigma: float,
+    call: bool,
+    engine: str = "analytical",
+    n_paths: int | None = None,
+    n_steps: int | None = None,
+    seed: int | None = None,
+) -> float:
+    curve = FlatDiscountCurve(r)
+    model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve)
+    contract = AsianOption(maturity=T, strike=K, is_call=call, is_geom=True)
     pricing_engine = AnalyticalEngine()
 
     return pricing_engine.price(contract, model)

@@ -5,10 +5,3 @@ class EuropeanOption:
     maturity:int
     strike:float
     is_call:bool
-
-@dataclass (slots=True)
-class AsianOption:
-    maturity:int
-    strike:float
-    is_call:bool
-
