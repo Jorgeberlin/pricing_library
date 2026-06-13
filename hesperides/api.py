@@ -11,6 +11,10 @@ from hesperides.pricers.binomial_pricer import BinomialPricer
 from hesperides.engines.analytical_engine import AnalyticalEngine
 from hesperides.market.curves import FlatDiscountCurve
 
+# Los imports para las griegas
+from hesperides.greeks.analytical_greek_engine import AnalyticalGreekEngine
+from hesperides.greeks.fd_greek_engine import FiniteDifferenceGreekEngine
+
 """
 Public API for the pricing library.
 """
@@ -166,3 +170,96 @@ def get_price_bs_geometric_asian(
             raise ValueError("n_steps is required for Monte Carlo Asian")
         pricing_engine = MonteCarloEngine()
         return pricing_engine.price(contract, model, n_paths=n_paths, n_steps=n_steps, seed=seed)
+    
+# API fachada para las griegas:
+def get_greek_bs_european(
+    St: float,
+    K: float,
+    T: float,
+    r: float,
+    sigma: float,
+    call: bool,
+    greek: str,
+    engine: str = "analytical",
+    greek_engine: str = "analytical",
+    fd_scheme: str = "central",
+    h: float | None = None,
+    n_paths: int | None = None,
+    seed: int | None = None,
+) -> float:
+
+    # Validaciones para los datos
+
+    if greek not in {"delta", "gamma", "vega", "rho"}:
+        raise ValueError("Invalid greek")
+
+    if engine not in {"analytical", "mc"}:
+        raise ValueError("Invalid engine")
+
+    if greek_engine not in {"analytical", "fd"}:
+        raise ValueError("Invalid greek_engine")
+
+    # Market/model validaciones
+
+    if St <= 0:
+        raise ValueError("St must be positive")
+
+    if K <= 0:
+        raise ValueError("K must be positive")
+
+    if T <= 0:
+        raise ValueError("T must be positive")
+
+    if sigma <= 0:
+        raise ValueError("sigma must be positive")
+
+    # FD-specific validation
+
+    if greek_engine == "fd":
+
+        if fd_scheme not in {"forward", "central"}:
+            raise ValueError("Invalid fd_scheme")
+
+        if h is not None and h <= 0:
+            raise ValueError("h must be positive")
+
+        if engine == "mc":
+
+            if n_paths is None or n_paths <= 0:
+                raise ValueError("n_paths must be positive")
+
+            if seed is None:
+                raise ValueError("seed is required for FD Monte Carlo Greeks")
+
+    # Los objetos los pongo aquí
+
+    curve = FlatDiscountCurve(r)
+    model = BlackScholesModel(spot=St,volatility=sigma,risk_free_curve=curve)
+    contract = EuropeanOption(maturity=T,strike=K,is_call=call)
+
+    # Analytical Greeks
+
+    if greek_engine == "analytical":
+
+        greek_calc = AnalyticalGreekEngine()
+        return greek_calc.greek(contract=contract,model=model,greek=greek)
+
+    # FD Greeks
+
+    if engine == "analytical":
+
+        greek_calc = FiniteDifferenceGreekEngine(AnalyticalEngine())
+
+    else:
+
+        greek_calc = FiniteDifferenceGreekEngine(MonteCarloEngine())
+
+    return greek_calc.greek(
+        contract=contract,
+        model=model,
+        greek=greek,
+        scheme=fd_scheme,
+        h=h,
+        n_paths=n_paths,
+        seed=seed
+    )

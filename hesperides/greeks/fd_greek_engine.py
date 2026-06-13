@@ -1,3 +1,5 @@
+from random import seed
+
 from hesperides.models.black_scholes_model import BlackScholesModel
 from hesperides.engines.monte_carlo_engine import MonteCarloEngine
 from hesperides.market.curves import FlatDiscountCurve
@@ -18,10 +20,10 @@ class FiniteDifferenceGreekEngine:
     def greek(self, contract, model, greek: str, scheme: str = "central", h: float | None = None, n_paths: int | None = None, seed: int | None = None):
 
         if greek not in {"delta", "gamma", "vega", "rho"}:
-            raise NotImplementedError("Solo se han implementado delta, gamma, vega y rho.")
+            raise ValueError("Solo se han implementado delta, gamma, vega y rho.")
 
         if scheme not in {"central", "forward"}:
-            raise NotImplementedError("Solo hay esquemas forward y central implementados.")
+            raise ValueError("Solo hay esquemas forward y central implementados.")
 
         if greek in {"delta", "gamma"}:
 

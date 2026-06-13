@@ -20,5 +20,5 @@ dev = [
     "build>=1.2"
 ]
 
-[tool.setuptools]
-packages = ["hesperides"]
+[tool.setuptools.packages.find]
+where = ["."]
