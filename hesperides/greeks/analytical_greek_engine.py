@@ -7,9 +7,7 @@ class AnalyticalGreekEngine:
     def greek(self, contract, model, greek: str) -> float:
 
         if greek not in {"delta", "gamma", "vega", "rho"}:
-            raise ValueError(
-                "greek must be one of: delta, gamma, vega, rho"
-            )
+            raise ValueError("greek must be one of: delta, gamma, vega, rho")
 
         S = model.spot
         K = contract.strike
@@ -18,9 +16,7 @@ class AnalyticalGreekEngine:
         r = model.risk_free_curve.rate
 
         d1 = (
-            np.log(S / K)
-            + (r + 0.5 * sigma**2) * T
-        ) / (sigma * np.sqrt(T))
+            np.log(S / K)+ (r + 0.5 * sigma**2) * T)/(sigma * np.sqrt(T))
 
         d2 = d1 - sigma * np.sqrt(T)
 
@@ -34,17 +30,12 @@ class AnalyticalGreekEngine:
         if greek == "gamma":
 
             return (
-                norm.pdf(d1)
-                / (S * sigma * np.sqrt(T))
+                norm.pdf(d1)/ (S * sigma * np.sqrt(T))
             )
 
         if greek == "vega":
 
-            return (
-                S
-                * norm.pdf(d1)
-                * np.sqrt(T)
-            )
+            return (S*norm.pdf(d1)* np.sqrt(T))
 
         if greek == "rho":
 
