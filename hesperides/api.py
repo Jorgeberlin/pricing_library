@@ -142,6 +142,41 @@ def get_price_bs_european(
         raise ValueError("Invalid engine")
 
 
+# Aquí meto la fachada para la misma función de arriba pero con dividendo:
+
+def get_price_bs_european_dividend(
+    St: float,
+    K: float,
+    T: float,
+    r: float,
+    sigma: float,
+    call: bool,
+    q: float = 0.0,
+    engine: str = "analytical",
+    n_paths: int | None = None,
+    seed: int | None = None,
+) -> float:
+    """
+    Price a European option on a stock paying a continuous dividend yield q.
+
+    Risk-neutral dynamics dS = (r - q) S dt + sigma S dW (Module 9);
+    discounting still uses r. With q = 0 this recovers Assignment 3.
+
+    Parameters
+    ----------
+    St, K, T, r, sigma, call, engine, n_paths, seed
+        As in ``get_price_bs_european`` (Assignment 3).
+    q : float, optional
+        Continuous dividend yield. Default 0.0 (recovers Assignment 3).
+
+    Returns
+    -------
+    float
+        Option price at valuation date.
+    """
+    ...
+
+
 #Fachada para la asiática geométrica:
 
 def get_price_bs_geometric_asian(
