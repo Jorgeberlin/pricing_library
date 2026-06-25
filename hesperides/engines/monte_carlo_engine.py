@@ -14,12 +14,13 @@ class MonteCarloEngine:
         sigma = model.volatility
         r = model.risk_free_curve.rate
         df = model.risk_free_curve.df(T)
+        q = model.dividend_yield
 
         if isinstance(contract, EuropeanOption):
 
             rng = np.random.default_rng(seed)
             z = rng.standard_normal(n_paths)
-            ST = S * np.exp((r - 0.5 * sigma**2) * T+ sigma * np.sqrt(T) * z)
+            ST = S * np.exp((r - q - 0.5 * sigma**2) * T + sigma * np.sqrt(T) * z)
 
             if contract.is_call:
                 payoff = np.maximum(ST - K, 0)
@@ -38,7 +39,7 @@ class MonteCarloEngine:
 
             rng = np.random.default_rng(seed)
             z = rng.standard_normal((n_paths, n_steps))
-            log_returns = (r - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * z
+            log_returns = (r - q - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * z
             log_paths = np.cumsum(log_returns, axis=1)                        # Sumamos los log_returns
             paths = S * np.exp(log_paths)                                     # Obtenemos los paths a partir de los log_paths (convierto a precios a partir de la trayectoria)
             geo_mean = np.exp(np.mean(np.log(paths), axis=1))

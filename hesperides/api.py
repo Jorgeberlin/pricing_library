@@ -144,6 +144,7 @@ def get_price_bs_european(
 
 # Aquí meto la fachada para la misma función de arriba pero con dividendo:
 
+# Voy a dejar esta función y la anterior simplemente para comprobar que ambas dan el mismo precio cuando q=0.0. Pero, evidentemente, esto es redundante y debería dejarse solo una.
 def get_price_bs_european_dividend(
     St: float,
     K: float,
@@ -174,7 +175,22 @@ def get_price_bs_european_dividend(
     float
         Option price at valuation date.
     """
-    ...
+    curve = FlatDiscountCurve(r)
+    model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve, dividend_yield=q)
+    contract = EuropeanOption(maturity=T, strike=K, is_call=call)
+
+    if engine == "analytical":
+        pricing_engine = AnalyticalEngine()
+        return pricing_engine.price(contract, model)
+    
+    elif engine == "mc":
+        if n_paths is None:
+            raise ValueError("n_paths is required for Monte Carlo")
+        pricing_engine = MonteCarloEngine()
+        return pricing_engine.price(contract, model, n_paths = n_paths, seed=seed)
+    
+    else:
+        raise ValueError("Invalid engine")
 
 
 #Fachada para la asiática geométrica:
