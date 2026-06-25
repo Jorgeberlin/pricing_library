@@ -314,3 +314,98 @@ def get_greek_bs_european(
         n_paths=n_paths,
         seed=seed
     )
+
+##############################
+# FX_OPTIONS#
+##############################
+
+# Aquí de nuevo estoy reutilizando el código para Black-Scholes simplemente cambiando rd y rf.
+# TODO: REDUNDANTE, cambiar esto en cuanto se pueda para futuras entregas.
+def get_price_fx_option(
+    St: float,
+    K: float,
+    T: float,
+    r_d: float,
+    r_f: float,
+    sigma: float,
+    call: bool,
+    engine: str = "analytical",
+    n_paths: int | None = None,
+    seed: int | None = None,
+) -> float:
+    """
+    Price a European FX option under the Garman–Kohlhagen model.
+
+    St is the FX spot (domestic per unit foreign); r_d and r_f are the
+    domestic and foreign continuously compounded rates; the price is returned
+    in domestic currency. Internally this is the cost-of-carry model with
+    q = r_f and r = r_d.
+
+    Returns
+    -------
+    float
+        Option price at valuation date, in domestic currency.
+    """
+
+    curve = FlatDiscountCurve(r_d)
+    model = BlackScholesModel(spot=St, volatility=sigma, risk_free_curve=curve, dividend_yield=r_f)
+    contract = EuropeanOption(maturity=T, strike=K, is_call=call)
+
+    if engine == "analytical":
+        pricing_engine = AnalyticalEngine()
+        return pricing_engine.price(contract, model)
+    
+    elif engine == "mc":
+        if n_paths is None:
+            raise ValueError("n_paths is required for Monte Carlo")
+        pricing_engine = MonteCarloEngine()
+        return pricing_engine.price(contract, model, n_paths = n_paths, seed=seed)
+    
+    else:
+        raise ValueError("Invalid engine")
+  
+# Option on a future (Black-76)
+
+def get_price_future_option(
+    F0: float,
+    K: float,
+    T: float,
+    r: float,
+    sigma: float,
+    call: bool,
+    engine: str = "analytical",
+    n_paths: int | None = None,
+    seed: int | None = None,
+) -> float:
+    """
+    Price a European option on a future under the Black-76 model.
+
+    F0 is the current future price. Under Q the future is driftless,
+    dF = sigma F dW, i.e. the cost-of-carry model with zero carry (q = r);
+    discounting uses r. With these inputs the price is the Black-76 value
+    e^{-rT} (F0 N(d_+) - K N(d_-)) for a call. No separate "futures model":
+    reuse the same Black–Scholes model with q = r.
+
+    Returns
+    -------
+    float
+        Option price at valuation date.
+    """
+
+    curve = FlatDiscountCurve(r)
+    model = BlackScholesModel(spot=F0, volatility=sigma, risk_free_curve=curve, dividend_yield=r)
+    contract = EuropeanOption(maturity=T, strike=K, is_call=call)
+
+    if engine == "analytical":
+        pricing_engine = AnalyticalEngine()
+        return pricing_engine.price(contract, model)
+    
+    elif engine == "mc":
+        if n_paths is None:
+            raise ValueError("n_paths is required for Monte Carlo")
+        pricing_engine = MonteCarloEngine()
+        return pricing_engine.price(contract, model, n_paths = n_paths, seed=seed)
+    
+    else:
+        raise ValueError("Invalid engine")
+    
