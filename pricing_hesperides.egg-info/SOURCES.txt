@@ -24,8 +24,12 @@ pricing_hesperides.egg-info/SOURCES.txt
 pricing_hesperides.egg-info/dependency_links.txt
 pricing_hesperides.egg-info/requires.txt
 pricing_hesperides.egg-info/top_level.txt
+tests/__init__.py
+tests/test_call_put_parities.py
 tests/test_european_black_scholes.py
 tests/test_european_mc.py
+tests/test_future_option.py
+tests/test_fx_options.py
 tests/test_geometric_asian_black_scholes.py
 tests/test_geometric_asian_mc.py
 tests/test_greeks.py

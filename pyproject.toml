@@ -22,3 +22,13 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
+include = [
+    "hesperides*",
+    "tests*"
+]
+exclude = [
+    "check_install_env*",
+    ".venv*",
+    "build*",
+    "dist*"
+]

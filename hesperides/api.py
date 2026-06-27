@@ -15,6 +15,11 @@ from hesperides.market.curves import FlatDiscountCurve
 from hesperides.greeks.analytical_greek_engine import AnalyticalGreekEngine
 from hesperides.greeks.fd_greek_engine import FiniteDifferenceGreekEngine
 
+# Para el solver del calor
+import hesperides.engines.heat_equation_engine as heat_engine
+
+
+
 """
 Public API for the pricing library.
 """
@@ -409,3 +414,63 @@ def get_price_future_option(
     else:
         raise ValueError("Invalid engine")
     
+
+
+# Espacio para los solvers del calor
+def solve_heat_equation(
+    initial_condition,
+    kappa: float,
+    M: float,
+    T: float,
+    n_x: int,
+    n_t: int,
+    scheme: str = "explicit",
+    left_boundary=0.0,
+    right_boundary=0.0,
+    boundary_type: str = "dirichlet",
+):
+    """
+    implementado todo en el engine
+    """
+    return heat_engine.solve_heat_equation(
+        initial_condition=initial_condition,
+        kappa=kappa,
+        M=M,
+        T=T,
+        n_x=n_x,
+        n_t=n_t,
+        scheme=scheme,
+        left_boundary=left_boundary,
+        right_boundary=right_boundary,
+        boundary_type=boundary_type,
+    )
+
+
+def get_price_bs_european_heat(
+    St: float,
+    K: float,
+    T: float,
+    r: float,
+    sigma: float,
+    call: bool,
+    n_x: int = 400,
+    n_t: int = 400,
+    scheme: str = "implicit",
+) -> float:
+    
+    """
+    pricing de opción vanilla europea con el solver del calor. Implementado en el engine.
+    """
+
+    return heat_engine.get_price_bs_european_heat(
+        St=St,
+        K=K,
+        T=T,
+        r=r,
+        sigma=sigma,
+        call=call,
+        n_x=n_x,
+        n_t=n_t,
+        scheme=scheme,
+    )
+
